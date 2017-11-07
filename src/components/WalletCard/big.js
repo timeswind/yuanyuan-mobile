@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Text, Image, StyleSheet, ImageBackground, TouchableHighlight } from 'react-native'
+import { View, Text, Image, StyleSheet, ImageBackground } from 'react-native'
 import * as ToolActions from '../../redux/actions/tool';
 import { bindActionCreators } from 'redux';
 import { Card, WingBlank, WhiteSpace, Button } from 'antd-mobile';
@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
   card: {
     padding: 16,
     backgroundColor: '#fff',
-    flexDirection: 'row',
+    flexDirection: 'column',
     overflow: 'hidden',
+    height: 200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    borderRadius: 6
+    borderRadius: 12
   },
   cardWrapper: {
 
@@ -48,25 +49,33 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     backgroundColor: 'transparent'
   },
+  cardNumber: {
+    fontSize: 22,
+    marginTop: 'auto',
+    color: "#fff",
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    paddingVertical: 4,
+    backgroundColor: 'transparent',
+    textAlign: 'right',
+    width: '100%'
+  },
   register_card_button: {
-    borderRadius: 0,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0
+    borderRadius: 0, borderBottomWidth: 0, borderLeftWidth: 0, borderRightWidth: 0
   }
 });
 
-class WalletCard extends React.Component {
+class WalletCardBig extends React.Component {
   render () {
     const { backgroudImageUri, cardName, organizationName, organizationImageUri, owned } = this.props
     return (
       <WingBlank size="lg">
         <WhiteSpace size="sm"/>
-        <TouchableHighlight onPress={this.props.goToCardDetail}>
-          <View style={styles.cardWrapper}>
-            <ImageBackground style={styles.card} source={{uri: backgroudImageUri}}>
+        <View style={styles.cardWrapper}>
+          <ImageBackground style={styles.card} source={{uri: backgroudImageUri}} resizeMode={'cover'}>
+            <View style={{flexDirection: 'row'}}>
               <Image style={styles.cardCompanyImage} source={{uri: organizationImageUri}}/>
-
               <View style={{flexDirection: 'column', marginLeft: 16}}>
                 <Text style={styles.organizationName}>
                   {organizationName}
@@ -75,14 +84,14 @@ class WalletCard extends React.Component {
                   {cardName}
                 </Text>
               </View>
-            </ImageBackground>
-            { owned ? (null) : (
-              <View>
-                <Button style={styles.register_card_button} onClick={this.props.goToCardDetail}>领取</Button>
-              </View>
-            ) }
-          </View>
-        </TouchableHighlight>
+            </View>
+            {owned && (
+              <Text style={styles.cardNumber}>
+                {this.props.cardNumber}
+              </Text>
+            )}
+          </ImageBackground>
+        </View>
         <WhiteSpace size="sm" />
       </WingBlank>
     )
@@ -102,7 +111,7 @@ class WalletCard extends React.Component {
 //   };
 // }
 
-WalletCard.propTypes = {
+WalletCardBig.propTypes = {
   cardName: PropTypes.string,
   organizationName: PropTypes.string,
   backgroudImageUri: PropTypes.string,
@@ -110,7 +119,7 @@ WalletCard.propTypes = {
   owned: PropTypes.bool
 }
 
-WalletCard.defaultProps = {
+WalletCardBig.defaultProps = {
   cardName: 'cardName',
   organizationName: 'organizationName',
   backgroudImageUri: 'https://icm.aexp-static.com/Internet/Acquisition/US_en/AppContent/OneSite/category/cardarts/premier-rewards-gold.png',
@@ -118,4 +127,4 @@ WalletCard.defaultProps = {
   owned: false
 };
 
-export default WalletCard;
+export default WalletCardBig;

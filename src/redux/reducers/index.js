@@ -1,7 +1,9 @@
-import { combineReducers } from 'redux'
+import storage from 'redux-persist/es/storage' // default: localStorage if web, AsyncStorage if react-native
+import { persistStore, persistCombineReducers } from 'redux-persist'
 import auth from './auth'
 import tool from './tool'
 import article from './article'
+import data from './data'
 // import { NavigationActions } from "react-navigation";
 // import AppNavigator from '../../AppNavigator'
 //
@@ -16,10 +18,16 @@ import article from './article'
 //   return nextState || state;
 // };
 
-const reducers = combineReducers({
+const config = {
+  key: 'root',
+  storage,
+}
+
+const reducers = persistCombineReducers(config, {
   tool,
   auth,
-  article
+  article,
+  data
 })
 
 export default reducers

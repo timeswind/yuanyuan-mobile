@@ -1,36 +1,70 @@
 import React from 'react'
-import {View, Text, ScrollView, StyleSheet, Image, TouchableHighlight} from 'react-native'
-import { StackNavigator } from 'react-navigation';
+import {View, Text, ScrollView, RefreshControl, StyleSheet, Image, TouchableHighlight, Button} from 'react-native'
 import { connect } from 'react-redux';
-import * as AuthActions from '../redux/actions/auth';
+import * as DataActions from '../redux/actions/data';
 import { bindActionCreators } from 'redux';
 import { List } from 'antd-mobile';
 import WalletCard from '../components/WalletCard';
+import AvailableCards from '../components/AvailableCards';
 
 const Item = List.Item;
 const Brief = Item.Brief;
 
 const styles = StyleSheet.create({
+  contentContainer: {
 
+  }
 });
 
 class WalletScreen extends React.Component {
   static navigationOptions = {
     title: '卡包',
-  };
+  }
+
+  state = {
+    refreshing: false
+  }
+
+  componentDidMount() {
+    const { isLogin, school } = this.props.auth
+    const self = this
+    if (isLogin && school) {
+      this.props.actions.fetchAvailableCards(school).then(function(){
+        console.log('fetching availablecards')
+        self.props.actions.fetchOwnedCards()
+      })
+    }
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    const { isLogin, school } = this.props.auth
+    const self = this
+    if (isLogin && school) {
+      this.props.actions.fetchAvailableCards(school).then(function(){
+        console.log('fetching availablecards')
+        self.props.actions.fetchOwnedCards().then(function() {
+          self.setState({refreshing: false});
+        })
+      })
+    }
+  }
 
   render() {
     const { auth } = this.props
     return (
-      <View style={{backgroundColor: '#fff', height: '100%'}}>
-        <ScrollView scrollEnabled={true} contentContainerStyle={styles.contentContainer}>
-          <WalletCard cardName="会员卡" organizationName="ISIA" backgroudImageUri="https://m.foolcdn.com/media/dubs/credit-card-art/chase-sapphire-preferred.png"/>
-          <WalletCard backgroudImageUri="https://support.apple.com/library/content/dam/edam/applecare/images/en_US/mac_apps/itunes/apple-music-gift-card.jpg"/>
-
-          <WalletCard backgroudImageUri="http://2c2f06a14a9ade4267e6-fb8aac3b3bf42afe824f73b606f0aa4c.r92.cf1.rackcdn.com/tenantlogos/6993.png"/>
-
-          <WalletCard />
-
+      <View style={{height: '100%'}}>
+        <ScrollView
+          ref="_scrollview"
+          scrollEnabled={true}
+          contentContainerStyle={styles.contentContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+              />
+          }>
+          <AvailableCards navigation={this.props.navigation}/>
 
         </ScrollView>
       </View>
@@ -45,11 +79,11 @@ const mapStatesToProps = (states) => {
   };
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     dispatch,
-//     actions: bindActionCreators(Object.assign({}, AuthActions), dispatch)
-//   };
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    actions: bindActionCreators(Object.assign({}, DataActions), dispatch)
+  };
+}
 
-export default connect(mapStatesToProps, null)(WalletScreen);
+export default connect(mapStatesToProps, mapDispatchToProps)(WalletScreen);
