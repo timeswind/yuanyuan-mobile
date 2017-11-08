@@ -16,18 +16,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   card: {
-    padding: 16,
     backgroundColor: '#fff',
     flexDirection: 'row',
-    overflow: 'hidden',
+  },
+  innerFrame: {
+    padding: 16,
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, .1)',
+  },
+  cardWrapper: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    borderRadius: 6
-  },
-  cardWrapper: {
-
+    borderRadius: 6,
+    overflow: 'hidden'
   },
   organizationName: {
     fontSize: 14,
@@ -49,38 +54,38 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   register_card_button: {
-    borderRadius: 0,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0
+    marginLeft: 'auto',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#aaa',
+    alignSelf: 'center'
   }
 });
 
 class WalletCard extends React.Component {
   render () {
-    const { backgroudImageUri, cardName, organizationName, organizationImageUri, owned } = this.props
+    const { backgroudImageUri, cardName, organizationName, organizationImageUri, owned, disable } = this.props
     return (
       <WingBlank size="lg">
         <WhiteSpace size="sm"/>
-        <TouchableHighlight onPress={this.props.goToCardDetail}>
+        <TouchableHighlight style={styles.cardWrapper} onPress={this.props.goToCardDetail}>
           <View style={styles.cardWrapper}>
             <ImageBackground style={styles.card} source={{uri: backgroudImageUri}}>
-              <Image style={styles.cardCompanyImage} source={{uri: organizationImageUri}}/>
-
-              <View style={{flexDirection: 'column', marginLeft: 16}}>
-                <Text style={styles.organizationName}>
-                  {organizationName}
-                </Text>
-                <Text style={styles.cardName}>
-                  {cardName}
-                </Text>
+              <View style={styles.innerFrame}>
+                <Image style={styles.cardCompanyImage} source={{uri: organizationImageUri}}/>
+                <View style={{flexDirection: 'column', marginLeft: 16}}>
+                  <Text style={styles.organizationName}>
+                    {organizationName}
+                  </Text>
+                  <Text style={styles.cardName}>
+                    {cardName}
+                  </Text>
+                </View>
+                { (owned && !disable) ? (null) : (
+                  <Button style={styles.register_card_button} onClick={this.props.goToCardDetail}>领取</Button>
+                ) }
               </View>
             </ImageBackground>
-            { owned ? (null) : (
-              <View>
-                <Button style={styles.register_card_button} onClick={this.props.goToCardDetail}>领取</Button>
-              </View>
-            ) }
           </View>
         </TouchableHighlight>
         <WhiteSpace size="sm" />
@@ -107,7 +112,8 @@ WalletCard.propTypes = {
   organizationName: PropTypes.string,
   backgroudImageUri: PropTypes.string,
   organizationImageUri: PropTypes.string,
-  owned: PropTypes.bool
+  owned: PropTypes.bool,
+  disable: PropTypes.bool
 }
 
 WalletCard.defaultProps = {
@@ -115,7 +121,8 @@ WalletCard.defaultProps = {
   organizationName: 'organizationName',
   backgroudImageUri: 'https://icm.aexp-static.com/Internet/Acquisition/US_en/AppContent/OneSite/category/cardarts/premier-rewards-gold.png',
   organizationImageUri: 'http://placehold.it/100x100',
-  owned: false
+  owned: false,
+  disable: false,
 };
 
 export default WalletCard;

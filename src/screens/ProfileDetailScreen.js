@@ -63,9 +63,9 @@ class ProfileDetailScreen extends React.Component {
     return (
       <ScrollView scrollEnabled={true} contentContainerStyle={styles.contentContainer}>
         <List renderHeader={() => '个人信息'} className="my-list">
-          <Item extra={auth.name} onLongPress={this.handleLongPress}>姓名</Item>
-          <Item extra={auth.email} onLongPress={this.handleLongPress}>邮箱</Item>
-          <Item extra={auth.school} onLongPress={this.handleLongPress}>学校</Item>
+          <Item extra={auth.name}>姓名</Item>
+          <Item extra={auth.email}>邮箱</Item>
+          <Item extra={auth.school}>学校</Item>
         </List>
         <Button style={styles.logOutButton} type="primary" onClick={this.logout}>登出</Button>
       </ScrollView>

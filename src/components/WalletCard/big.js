@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
 class WalletCardBig extends React.Component {
   render () {
-    const { backgroudImageUri, cardName, organizationName, organizationImageUri, owned } = this.props
+    const { backgroudImageUri, cardName, organizationName, organizationImageUri, owned, disable } = this.props
     return (
       <WingBlank size="lg">
         <WhiteSpace size="sm"/>
@@ -85,7 +85,7 @@ class WalletCardBig extends React.Component {
                 </Text>
               </View>
             </View>
-            {owned && (
+            {(owned && !disable) && (
               <Text style={styles.cardNumber}>
                 {this.props.cardNumber}
               </Text>
@@ -116,7 +116,8 @@ WalletCardBig.propTypes = {
   organizationName: PropTypes.string,
   backgroudImageUri: PropTypes.string,
   organizationImageUri: PropTypes.string,
-  owned: PropTypes.bool
+  owned: PropTypes.bool,
+  disable: PropTypes.bool
 }
 
 WalletCardBig.defaultProps = {
@@ -124,7 +125,8 @@ WalletCardBig.defaultProps = {
   organizationName: 'organizationName',
   backgroudImageUri: 'https://icm.aexp-static.com/Internet/Acquisition/US_en/AppContent/OneSite/category/cardarts/premier-rewards-gold.png',
   organizationImageUri: 'http://placehold.it/100x100',
-  owned: false
+  owned: false,
+  disable: false
 };
 
 export default WalletCardBig;

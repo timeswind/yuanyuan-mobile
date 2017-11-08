@@ -22,6 +22,7 @@ class AvailableCards extends React.PureComponent {
       backgroudImageUri={item.image}
       organizationImageUri={item.issuer.avatar}
       owned={item.owned}
+      disable={item.disable}
       goToCardDetail={() => this.goToCardDetail(item._id)}
       />
   )
@@ -50,6 +51,7 @@ class AvailableCards extends React.PureComponent {
           data={dataSource}
           keyExtractor={this._keyExtractor}
           renderItem={this.renderArticle}
+          style={{paddingHorizontal: 8, paddingVertical: 16}}
           />
       </View>
     )

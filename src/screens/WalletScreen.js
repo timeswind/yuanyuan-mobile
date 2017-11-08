@@ -12,7 +12,7 @@ const Brief = Item.Brief;
 
 const styles = StyleSheet.create({
   contentContainer: {
-
+    backgroundColor: "#fff"
   }
 });
 
@@ -27,27 +27,34 @@ class WalletScreen extends React.Component {
 
   componentDidMount() {
     const { isLogin, school } = this.props.auth
-    const self = this
     if (isLogin && school) {
-      this.props.actions.fetchAvailableCards(school).then(function(){
-        console.log('fetching availablecards')
-        self.props.actions.fetchOwnedCards()
-      })
+      this.fetchCardData(school)
     }
   }
 
   _onRefresh() {
-    this.setState({refreshing: true});
     const { isLogin, school } = this.props.auth
-    const self = this
     if (isLogin && school) {
-      this.props.actions.fetchAvailableCards(school).then(function(){
-        console.log('fetching availablecards')
-        self.props.actions.fetchOwnedCards().then(function() {
-          self.setState({refreshing: false});
-        })
-      })
+      this.fetchCardData(school)
     }
+  }
+
+  fetchCardData(school) {
+    this.startRefreshing()
+    const self = this
+    this.props.actions.fetchAvailableCards(school).then(function(){
+      self.props.actions.fetchOwnedCards().then(function() {
+        self.stopRefreshing()
+      })
+    })
+  }
+
+  startRefreshing() {
+    this.setState({refreshing: true})
+  }
+
+  stopRefreshing() {
+    this.setState({refreshing: false})
   }
 
   render() {

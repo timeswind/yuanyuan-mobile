@@ -1,7 +1,8 @@
 import {
   FETCH_AVAILABLE_CARDS_SUCCESS,
   FETCH_OWNED_CARDS_SUCCESS,
-  REGISTER_CARD_SUCCESS
+  REGISTER_CARD_SUCCESS,
+  DEREGISTER_CARD_SUCCESS
 } from '../constants'
 
 import {
@@ -80,6 +81,28 @@ export function RegisterCard(id) {
       console.log(responseJson)
       dispatch({
         type: REGISTER_CARD_SUCCESS,
+        card: responseJson.card
+      })
+    })
+    .catch((error) => console.error(error))
+  }
+}
+
+export function deregisteredCard(id) {
+  let url = `${API_SERVER}/protect/deregister_card?id=${id}`
+  let TOKEN = store.getState().auth.token
+  return function (dispatch) {
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson)
+      dispatch({
+        type: DEREGISTER_CARD_SUCCESS,
         card: responseJson.card
       })
     })
