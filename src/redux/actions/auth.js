@@ -1,7 +1,8 @@
 import {
-  LOGIN,
   USER_LOGGEDIN,
-  USER_LOGGEDOUT
+  USER_LOGGEDOUT,
+  USER_LOGIN_FAIL,
+  DATA_USER_LOGGEDOUT
 } from '../constants'
 
 import {
@@ -11,10 +12,6 @@ import {
 import axios from 'axios'
 
 export function login(email, password) {
-  console.log(JSON.stringify({
-    email,
-    password
-  }))
   let url = `${API_SERVER}/public/login`
   return function (dispatch) {
     return axios.post(url, {email, password})
@@ -26,6 +23,12 @@ export function login(email, password) {
         })
       }
     })
+    .catch(error => {
+      dispatch({
+        type: USER_LOGIN_FAIL,
+        data: error.response
+      })
+    });
   }
 }
 
@@ -38,6 +41,9 @@ export const logout = () => {
     return delay().then(() => {
       dispatch({
         type: USER_LOGGEDOUT
+      })
+      dispatch({
+        type: DATA_USER_LOGGEDOUT
       })
     });
   }

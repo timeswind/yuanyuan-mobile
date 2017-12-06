@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
   loginButton: {
     marginHorizontal: 32,
     marginTop: 16
+  },
+  loginErrorText: {
+    color: 'red', marginHorizontal: 16, marginTop: 16, fontSize: 16
   }
 });
 
@@ -49,6 +52,15 @@ class LoginScreen extends React.Component {
   static navigationOptions = {
     title: '我',
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isFocused && nextProps.isFocused) {
+      console.log('// screen enter (refresh data, update ui ...)')
+    }
+    if (this.props.isFocused && !nextProps.isFocused) {
+      console.log('// screen exit')
+    }
+  }
 
   submit = () => {
     const self = this
@@ -62,9 +74,9 @@ class LoginScreen extends React.Component {
     });
   }
 
-
   render() {
     const { getFieldProps } = this.props.form;
+    const { auth } = this.props
     return (
       <View>
         <TouchableHighlight underlayColor="transparent" style={styles.header} onPress={() => this.props.navigation.goBack()}>
@@ -73,6 +85,7 @@ class LoginScreen extends React.Component {
         <List renderHeader={() => '登录'}>
           <InputItem
             {...getFieldProps('email')}
+            autoCapitalize="none"
             clear
             placeholder=""
             autoFocus
@@ -85,6 +98,7 @@ class LoginScreen extends React.Component {
             type="password"
             >密码</InputItem>
         </List>
+        {auth.loginError && (<Text style={styles.loginErrorText}>{auth.loginError}</Text>)}
         <Button type="primary" style={styles.loginButton} onClick={this.submit}>
           登录
         </Button>

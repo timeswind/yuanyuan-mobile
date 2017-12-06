@@ -8,7 +8,8 @@ import {
   ScrollView
 } from 'react-native';
 import getRNDraftJSBlocks from 'react-native-draftjs-render';
-
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 const styles = StyleSheet.create({
   container: {
@@ -82,17 +83,24 @@ const customStyles = StyleSheet.flatten({
   },
 });
 
+
+
 function atomicHandler (entityMap) {
   if (entityMap && Object.keys(entityMap).length > 0) {
     return function (item) {
       switch (item.type) {
         case "atomic":
         if (item.entityRanges.length > 0) {
+          var imageURL = entityMap[item.entityRanges[0]["key"]]["data"]["src"]
+          if (imageURL.indexOf("yuanyuanofficial.s3.amazonaws.com") >= 0) {
+            imageURL = imageURL.replace("yuanyuanofficial.s3.amazonaws.com", "yuanyuan.imgix.net") + "?w=600"
+          }
+          console.log(imageURL)
           return (
             <View key={item.entityRanges[0]["key"]} style={{ flex: 1, paddingTop: 8, paddingBottom: 8 }}>
               <Image
                 style={{ height: 200 }}
-                source={{ uri: entityMap[item.entityRanges[0]["key"]]["data"]["src"] }}
+                source={{ uri: imageURL }}
                 resizeMode={"contain"}/>
             </View>
           );
@@ -123,6 +131,10 @@ export default class NewsDetailScreen extends Component {
     content: {}
   }
 
+  renderArticleCreatedAtTime(date) {
+    return moment(date).format("YYYY-MM-DD") + "  "
+  }
+
   componentDidMount() {
     if (this.props.navigation.state.params !== undefined && 'article' in this.props.navigation.state.params && 'content' in this.props.navigation.state.params.article) {
       const content = JSON.parse(this.props.navigation.state.params.article.content)
@@ -141,10 +153,15 @@ export default class NewsDetailScreen extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        <View style={{marginTop: 16, marginBottom: 4, paddingBottom: 8, borderBottomWidth: 0.5, borderColor: '#ccc'}}>
+        <View style={{marginTop: 16, marginBottom: 4, paddingBottom: 8}}>
           <Text style={{fontSize: 24}}>{this.state.article.title}</Text>
         </View>
-        <Text style={{textAlign: 'right', color: "#666"}}>{this.state.article.user && this.state.article.user.name}</Text>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 8}}>
+          <Text style={{fontSize: 20, color: '#666'}}>
+            {this.state.article.created_at && this.renderArticleCreatedAtTime(this.state.article.created_at)}
+            {this.state.article.user && this.state.article.user.name}
+          </Text>
+        </View>
         <View>{blocks}</View>
       </ScrollView>
     );

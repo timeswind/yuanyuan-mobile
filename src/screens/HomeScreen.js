@@ -16,6 +16,12 @@ class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: '消息',
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('./homeTabbarIcon.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
+        />
+    ),
   };
 
   componentDidMount() {

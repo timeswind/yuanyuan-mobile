@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingVertical: 0
+  },
+  icon: {
+    width: 26,
+    height: 26,
   }
 });
 
@@ -64,6 +68,12 @@ class GuideScreen extends React.Component {
 
   static navigationOptions = {
     title: '干货',
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/homeTabbarIcon.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
+        />
+    )
   };
 
   render() {
@@ -76,49 +86,51 @@ class GuideScreen extends React.Component {
               onRefresh={this._onRefresh.bind(this)}
               />
           }>
-          <View style={{backgroundColor: "#fff"}}>
-            <View style={styles.topNavBarOne}>
-              <TouchableHighlight
-                underlayColor="#E8E8E8"
-                style={styles.topNavBlock}
-                onPress={() => this.props.navigation.navigate('guideMap')}>
-                <View>
-                  <Image style={styles.navImage} source={require('../images/mapNavIcon.png')}/>
-                  <Text style={styles.topNavBlockText}>地图</Text>
+          {/*
+            <View style={{backgroundColor: "#fff"}}>
+              <View style={styles.topNavBarOne}>
+                <TouchableHighlight
+                  underlayColor="#E8E8E8"
+                  style={styles.topNavBlock}
+                  onPress={() => this.props.navigation.navigate('guideMap')}>
+                  <View>
+                    <Image style={styles.navImage} source={require('../images/mapNavIcon.png')}/>
+                    <Text style={styles.topNavBlockText}>地图</Text>
+                  </View>
+                </TouchableHighlight>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>交通</Text>
                 </View>
-              </TouchableHighlight>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>交通</Text>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>社团</Text>
+                </View>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>美食</Text>
+                </View>
               </View>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>社团</Text>
-              </View>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>美食</Text>
-              </View>
-            </View>
-            <View style={styles.topNavBarTwo}>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>住宿</Text>
-              </View>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>学术</Text>
-              </View>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>新生</Text>
-              </View>
-              <View style={styles.topNavBlock}>
-                <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
-                <Text style={styles.topNavBlockText}>更多</Text>
+              <View style={styles.topNavBarTwo}>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>住宿</Text>
+                </View>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>学术</Text>
+                </View>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>新生</Text>
+                </View>
+                <View style={styles.topNavBlock}>
+                  <Image style={styles.navImage} source={{uri: 'http://placehold.it/100x100'}}/>
+                  <Text style={styles.topNavBlockText}>更多</Text>
+                </View>
               </View>
             </View>
-          </View>
+            */}
           {/*  <View style={{flex: 1}}>
           <GuideHomeArticleListView navigation={this.props.navigation}/>
           </View> */}

@@ -7,25 +7,49 @@ import { bindActionCreators } from 'redux';
 import WalletCard from '../WalletCard'
 
 class AvailableCards extends React.PureComponent {
-  componentDidMount() {
-    console.log(this.props)
-  }
-
   goToCardDetail(id) {
     this.props.navigation.navigate('cardDetail', {id: id})
   }
 
-  renderArticle = ({item}) => (
-    <WalletCard
-      cardName={item.name}
-      organizationName={item.issuer.name}
-      backgroudImageUri={item.image}
-      organizationImageUri={item.issuer.avatar}
-      owned={item.owned}
-      disable={item.disable}
-      goToCardDetail={() => this.goToCardDetail(item._id)}
-      />
-  )
+  renderArticle = ({item}) => {
+    console.log(item._id)
+    if (item._id === 'notOwnedHeader') {
+      return (
+        <View style={{
+            backgroundColor: '#e9e9ef',
+            paddingVertical: 16,
+            paddingLeft: 16,
+            marginVertical: 8,
+          }}>
+          <Text style={{color: "#888", fontSize: 16}}>尚未领取</Text>
+        </View>
+      )
+    } else if (item._id === 'ownedHeader') {
+      return (
+        <View style={{
+            backgroundColor: '#e9e9ef',
+            paddingVertical: 16,
+            paddingLeft: 16,
+            marginBottom: 8
+          }}>
+          <Text style={{color: "#888", fontSize: 16}}>活跃卡片</Text>
+        </View>
+      )
+    } else {
+      return (
+        <WalletCard
+          style={{paddingHorizontal: 8}}
+          cardName={item.name}
+          organizationName={item.issuer.name}
+          backgroudImageUri={item.image}
+          organizationImageUri={item.issuer.avatar}
+          owned={item.owned}
+          disable={item.disable}
+          goToCardDetail={() => this.goToCardDetail(item._id)}
+          />
+      )
+    }
+  }
 
   _keyExtractor = (item, index) => item._id;
 
@@ -38,20 +62,19 @@ class AvailableCards extends React.PureComponent {
     const notOwnedIds = this.props.availableCards.allIds.filter(function(id){
       return ownedIds.indexOf(id) === -1
     })
-    console.log('notOwnedIds', notOwnedIds)
     const notOwnedCardDataSource = notOwnedIds.map(function(id){
       return dataById[id]
     })
-
-    const dataSource = ownedCardDataSource.concat(notOwnedCardDataSource)
-
+    var dataSource = [{_id: 'ownedHeader'}].concat(ownedCardDataSource)
+    dataSource = dataSource.concat([{_id: 'notOwnedHeader'}])
+    dataSource = dataSource.concat(notOwnedCardDataSource)
     return (
       <View>
         <FlatList
           data={dataSource}
           keyExtractor={this._keyExtractor}
           renderItem={this.renderArticle}
-          style={{paddingHorizontal: 8, paddingVertical: 16}}
+          style={{paddingHorizontal: 0, paddingBottom: 16}}
           />
       </View>
     )

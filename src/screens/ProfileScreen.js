@@ -35,12 +35,22 @@ const styles = StyleSheet.create({
   cellText: {
     fontSize: 18,
     marginLeft: 16
+  },
+  icon: {
+    width: 26,
+    height: 26,
   }
 });
 
 class ProfileScreen extends React.Component {
   static navigationOptions = {
     title: '我',
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/profileTabbarIcon.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
+        />
+    )
   };
 
   profileSectorOnClick = () => {

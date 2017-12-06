@@ -2,7 +2,8 @@ import {
   FETCH_AVAILABLE_CARDS_SUCCESS,
   FETCH_OWNED_CARDS_SUCCESS,
   REGISTER_CARD_SUCCESS,
-  DEREGISTER_CARD_SUCCESS
+  DEREGISTER_CARD_SUCCESS,
+  DATA_USER_LOGGEDOUT
 } from '../constants'
 
 
@@ -19,22 +20,34 @@ export default function update(state = initialState, action) {
     case FETCH_AVAILABLE_CARDS_SUCCESS:
     if (action.cards && action.cards.length > 0) {
       return fetchAvailableCardsSuccess(action.cards, state)
+    } else {
+      return state
     }
 
     case FETCH_OWNED_CARDS_SUCCESS:
     if (action.cards && action.cards.length > 0) {
       return fetchOwnedCardsSuccess(action.cards, state)
+    } else {
+      return state
     }
 
     case REGISTER_CARD_SUCCESS:
     if (action.card) {
       return registerCardSuccess(action.card, state)
+    } else {
+      return state
     }
 
     case DEREGISTER_CARD_SUCCESS:
     if (action.card) {
       return deregisterCardSuccess(action.card, state)
+    } else {
+      return state
     }
+
+    case DATA_USER_LOGGEDOUT:
+      return initialState
+
     default:
     return state
   }
@@ -54,7 +67,6 @@ function fetchAvailableCardsSuccess(rawCardsData, state) {
     byId[card._id] = card
     allIds.add(card._id)
   })
-
   return updateObject(state, {
     availableCards: {
       byId: byId,
@@ -68,7 +80,6 @@ function fetchOwnedCardsSuccess(rawCardsData, state) {
   var byId = state.availableCards.byId;
   var allIds = new Set(state.availableCards.allIds);
   var ownedIds = new Set(state.availableCards.ownedIds);
-  console.log('fetchOwnedCardsSuccess', rawCardsData)
   rawCardsData.forEach((card, index) => {
     const cardTemplateID = card['template']['_id']
     if ('template' in card && 'image' in card['template'] && card['template']['image'].indexOf("yuanyuanofficial.s3.amazonaws.com") >= 0) {
@@ -81,7 +92,7 @@ function fetchOwnedCardsSuccess(rawCardsData, state) {
     byId[cardTemplateID] = card["template"]
     allIds.add(cardTemplateID)
     if (card["disable"] === true) {
-
+      // card is disabled
     } else {
       ownedIds.add(cardTemplateID)
     }

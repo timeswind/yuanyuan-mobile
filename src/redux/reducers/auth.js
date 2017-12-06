@@ -1,6 +1,7 @@
 import {
   USER_LOGGEDIN,
-  USER_LOGGEDOUT
+  USER_LOGGEDOUT,
+  USER_LOGIN_FAIL
 } from '../constants'
 
 const initialState = {
@@ -14,11 +15,11 @@ const initialState = {
   permissions: [],
   emailVerified: true,
   verifyEmailStatus: "",
+  loginError: null
 }
 
 export default function update(state = initialState, action) {
-  if(action.type === USER_LOGGEDIN) {
-    console.log(action.data)
+  if (action.type === USER_LOGGEDIN) {
     return Object.assign({}, state, {
       isLogin: true,
       email: action.data.email,
@@ -27,9 +28,10 @@ export default function update(state = initialState, action) {
       role: action.data.role,
       permissions: action.data.permissions,
       school: action.data.school,
-      token: action.data.token
+      token: action.data.token,
+      loginError: null
     })
-  } else if(action.type === USER_LOGGEDOUT) {
+  } else if (action.type === USER_LOGGEDOUT) {
     return Object.assign({}, state, {
       isLogin: false,
       school: "",
@@ -40,9 +42,17 @@ export default function update(state = initialState, action) {
       role: "",
       permissions: [],
       emailVerified: false,
-      verifyEmailStatus: ""
+      verifyEmailStatus: "",
+      loginError: null
     })
+  } else if (action.type === USER_LOGIN_FAIL) {
+    const loginErrorResponse = action.data
+    if ('error' in loginErrorResponse.data) {
+      return Object.assign({}, state, {
+        loginError: loginErrorResponse.data.error
+      })
+    }
   }
-  
+
   return state
 }

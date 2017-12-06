@@ -18,7 +18,6 @@ export function fetchAvailableCards(school) {
     return fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       dispatch({
         type: FETCH_AVAILABLE_CARDS_SUCCESS,
         cards: responseJson.cards
@@ -56,7 +55,6 @@ export function fetchOwnedCards() {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       dispatch({
         type: FETCH_OWNED_CARDS_SUCCESS,
         cards: responseJson.cards
@@ -78,7 +76,6 @@ export function RegisterCard(id) {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       dispatch({
         type: REGISTER_CARD_SUCCESS,
         card: responseJson.card
@@ -100,7 +97,6 @@ export function deregisteredCard(id) {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       dispatch({
         type: DEREGISTER_CARD_SUCCESS,
         card: responseJson.card

@@ -53,13 +53,14 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     backgroundColor: 'transparent'
   },
-  register_card_button: {
+  /*register_card_button: {
     marginLeft: 'auto',
-    borderRadius: 6,
+    marginTop: 8,
+    borderRadius: 3,
     borderWidth: 1,
-    borderColor: '#aaa',
-    alignSelf: 'center'
-  }
+    borderColor: '#ddd',
+    alignSelf: 'center',
+  }*/
 });
 
 class WalletCard extends React.Component {
@@ -81,13 +82,13 @@ class WalletCard extends React.Component {
                     {cardName}
                   </Text>
                 </View>
-                { (owned && !disable) ? (null) : (
-                  <Button style={styles.register_card_button} onClick={this.props.goToCardDetail}>领取</Button>
-                ) }
               </View>
             </ImageBackground>
           </View>
         </TouchableHighlight>
+        {/*(owned && !disable) ? (null) : (
+          <Button style={styles.register_card_button} onClick={this.props.goToCardDetail}>领取</Button>
+        ) */}
         <WhiteSpace size="sm" />
       </WingBlank>
     )
