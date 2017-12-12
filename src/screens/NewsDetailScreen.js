@@ -138,6 +138,7 @@ export default class NewsDetailScreen extends Component {
   componentDidMount() {
     if (this.props.navigation.state.params !== undefined && 'article' in this.props.navigation.state.params && 'content' in this.props.navigation.state.params.article) {
       const content = JSON.parse(this.props.navigation.state.params.article.content)
+      console.log(this.props.navigation.state.params.article)
       this.setState({article: this.props.navigation.state.params.article, content: content})
     }
   }
@@ -150,15 +151,22 @@ export default class NewsDetailScreen extends Component {
     };
 
     const blocks = getRNDraftJSBlocks(params);
-
+    console.log(this.state.article.author)
     return (
       <ScrollView style={styles.container}>
         <View style={{marginTop: 16, marginBottom: 4, paddingBottom: 8}}>
           <Text style={{fontSize: 24}}>{this.state.article.title}</Text>
         </View>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 8}}>
-          <Text style={{fontSize: 20, color: '#666'}}>
+          <Text style={{fontSize: 18, color: '#666'}}>
             {this.state.article.created_at && this.renderArticleCreatedAtTime(this.state.article.created_at)}
+          </Text>
+          {this.state.article.author !== '' && (
+            <Text style={{fontSize: 18, color: '#666', marginRight: 8}}>
+              {this.state.article.author}
+            </Text>
+          )}
+          <Text style={{fontSize: 18, color: '#666'}}>
             {this.state.article.user && this.state.article.user.name}
           </Text>
         </View>

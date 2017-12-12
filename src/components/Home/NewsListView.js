@@ -19,7 +19,7 @@ class NewsListView extends React.Component {
             <Text style={{fontSize: 18, marginBottom: 8}}>{article.title}</Text>
             <Text style={{fontSize: 14, color: "#666", marginTop: 'auto'}}>{article.user.name}</Text>
           </View>
-          <Image style={{borderRadius: 0, width: 100, height: 80}} source={{uri: 'http://placehold.it/100x80'}}/>
+          <Image style={{borderRadius: 0, width: 100, height: 80}} source={{uri: article.cover ? article.cover : 'http://placehold.it/100x80'}}/>
         </View>
       </TouchableHighlight>
     );

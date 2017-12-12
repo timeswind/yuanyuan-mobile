@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import * as AuthActions from '../redux/actions/auth';
 import { bindActionCreators } from 'redux';
 import { List, Button } from 'antd-mobile';
+import { ImagePicker } from 'expo';
+import { uploadImageWithFolder } from '../utils/upload'
 const Item = List.Item;
 const Brief = Item.Brief;
 
@@ -41,12 +43,24 @@ class ProfileDetailScreen extends React.Component {
     title: '我',
   };
 
-  state = {
-    listViewData: [
-      {key: 'name'},
-      {key: 'logout'},
-    ]
-  }
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+    const self = this
+    if (!result.cancelled) {
+      console.log(result)
+      this.setState({ image: result.uri });
+      uploadImageWithFolder(result.uri, "avatar").then(function(response){
+        console.log("upload success", response.data.link)
+        self.props.actions.updateAvatar(response.data.link)
+      })
+      .catch((errorResponse) => console.log(errorResponse))
+    }
+  };
 
   logout = () => {
     const self = this
@@ -59,10 +73,16 @@ class ProfileDetailScreen extends React.Component {
   }
 
   render() {
-    const { auth } = this.props
+    const { auth } = this.props;
+    console.log(auth)
     return (
       <ScrollView scrollEnabled={true} contentContainerStyle={styles.contentContainer}>
         <List renderHeader={() => '个人信息'} className="my-list">
+          <Item extra={
+              <Image style={{borderRadius: 0, width: 80, height: 80, marginVertical: 8}} source={{uri: (auth.avatar !== "" ? auth.avatar : 'http://placehold.it/80x80') }}/>
+            }
+            onClick={this._pickImage}
+            >头像<Brief>点击修改</Brief></Item>
           <Item extra={auth.name}>姓名</Item>
           <Item extra={auth.email}>邮箱</Item>
           <Item extra={auth.school}>学校</Item>

@@ -12,7 +12,6 @@ class AvailableCards extends React.PureComponent {
   }
 
   renderArticle = ({item}) => {
-    console.log(item._id)
     if (item._id === 'notOwnedHeader') {
       return (
         <View style={{

@@ -2,6 +2,7 @@ import {
   USER_LOGGEDIN,
   USER_LOGGEDOUT,
   USER_LOGIN_FAIL,
+  USER_SET_AVATAR,
   DATA_USER_LOGGEDOUT
 } from '../constants'
 
@@ -10,6 +11,8 @@ import {
 } from '../../globalConfig'
 
 import axios from 'axios'
+import configureStore from '../store';
+const { store } = configureStore
 
 export function login(email, password) {
   let url = `${API_SERVER}/public/login`
@@ -28,6 +31,36 @@ export function login(email, password) {
         type: USER_LOGIN_FAIL,
         data: error.response
       })
+    });
+  }
+}
+
+export function updateAvatar(avatar_url) {
+  let url = `${API_SERVER}/protect/profile/avatar`;
+  let TOKEN = store.getState().auth.token
+  return function (dispatch) {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        url: avatar_url
+      })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.success) {
+        dispatch({
+          type: USER_SET_AVATAR,
+          avatar: avatar_url
+        })
+      }
+    })
+    .catch(error => {
+      console.log(error)
     });
   }
 }

@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import configStore from './src/redux/store';
 import MainEntry from './src/MainEntry';
 import { PersistGate } from 'redux-persist/es/integration/react'
-
 const {store, persistor} = configStore
+
 class App extends Component {
   render() {
     return (

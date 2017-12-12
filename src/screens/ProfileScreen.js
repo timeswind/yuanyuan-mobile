@@ -72,7 +72,7 @@ class ProfileScreen extends React.Component {
             multipleLine
             onClick={this.profileSectorOnClick}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image style={{borderRadius: 0, width: 100, height: 80, margin: 8}} source={{uri: 'http://placehold.it/100x80'}}/>
+              <Image style={{borderRadius: 0, width: 100, height: 100, margin: 8}} source={{uri: auth.avatar !== "" ? auth.avatar :'http://placehold.it/100x100'}}/>
               <View style={{flexDirection: 'column', marginLeft: 'auto'}}>
                 <Text style={{fontSize: 20, color: '#333'}}>
                   {auth.isLogin ? auth.name : '登入'}
@@ -81,7 +81,7 @@ class ProfileScreen extends React.Component {
             </View>
           </Item>
         </List>
-        <List renderHeader={() => '功能'}>
+        <List renderHeader={() => ''}>
 
           <Item
             arrow="horizontal"
@@ -90,6 +90,16 @@ class ProfileScreen extends React.Component {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image style={{width: 24, height: 24}} source={require("../images/settingIcon.png")} />
               <Text style={{marginLeft: 16, fontSize: 16}}>设置</Text>
+            </View>
+
+          </Item>
+          <Item
+            arrow="horizontal"
+            onClick={() => {}}
+            >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image style={{width: 24, height: 24}} source={require("../images/markIcon.png")} />
+              <Text style={{marginLeft: 16, fontSize: 16}}>收藏</Text>
             </View>
 
           </Item>

@@ -75,7 +75,7 @@ class WalletCardBig extends React.Component {
         <View style={styles.cardWrapper}>
           <ImageBackground style={styles.card} source={{uri: backgroudImageUri}} resizeMode={'cover'}>
             <View style={{flexDirection: 'row'}}>
-              <Image style={styles.cardCompanyImage} source={{uri: organizationImageUri}}/>
+              <Image style={styles.cardCompanyImage} source={{uri: !!organizationImageUri ? organizationImageUri : "http://placehold.it/100x100"}}/>
               <View style={{flexDirection: 'column', marginLeft: 16}}>
                 <Text style={styles.organizationName}>
                   {organizationName}
